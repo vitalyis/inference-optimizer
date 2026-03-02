@@ -4,7 +4,7 @@ description: Audit OpenClaw token usage, purge stale sessions, and optimize infe
 license: MIT
 metadata:
   author: clawdbot
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Inference Optimizer
@@ -19,14 +19,16 @@ Optimize OpenClaw for maximum inference speed and minimum token usage. When user
 
 ## Workflow
 
-1. **Audit:** Exec `bash <skill_dir>/scripts/openclaw-audit.sh`, return raw output. Do NOT ask what to optimize. Do NOT list options.
-2. **Purge:** If user approves purge after audit, exec `bash <skill_dir>/scripts/purge-stale-sessions.sh`, return raw output.
+1. **Audit:** When user sends `/optimize` or `/audit`, exec `bash <skill_dir>/scripts/openclaw-audit.sh` and return its output.
+2. **Purge:** If user approves purge after audit, exec `bash <skill_dir>/scripts/purge-stale-sessions.sh` (archives to ~/openclaw-purge-archive by default). Return script output. User can run with `--delete` for immediate removal if preferred.
 3. **Full optimization:** For Task 1–5 (workspace rewrite, heartbeat, deploy), read `optimization-agent.md` and follow its flow.
 
 ## Path Resolution
 
 Scripts live at `~/clawd/skills/public/inference-optimizer/scripts/` (or wherever the skill is installed). Use that path when exec-ing.
 
-## Allowlist
+## Purge and Allowlist
 
-Purge script needs: `find`, `find *`, `find **`, `rm`, `rm *`, `rm **`, `bash`, `bash *`, `bash **`. Add to `exec-approvals.json` for the agent if purge is blocked.
+**Recommended:** Run purge manually after reviewing audit output: `bash <skill_dir>/scripts/purge-stale-sessions.sh`. No allowlist changes needed.
+
+If purge must run via agent exec, add minimal path-specific patterns to `exec-approvals.json` rather than broad wildcards. See README Security section.

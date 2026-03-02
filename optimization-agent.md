@@ -29,11 +29,11 @@
 
 ## constraints
 
-- Do NOT remove API keys, auth profiles, gateway token, channel config, approvals, or plugin entries
-- Do NOT change model IDs or provider URLs
+- Preserve API keys, auth profiles, gateway token, channel config, approvals, and plugin entries
+- Preserve model IDs and provider URLs
 - Maintain valid JSON throughout
-- Show each Task's output as a clearly labelled section
-- For file rewrites, show the new content in full in a code block
+- For file rewrites: output new content in a code block; never include secrets — use `<redacted>` for keys, tokens, passwords
+- Audit outputs only metadata (char counts, token estimates); it does not echo file contents
 
 ---
 
@@ -56,18 +56,13 @@ For each file identified in Task 1 with savings > 100 tokens:
 
 - Rewrite to declarative bullet points only
 - Target: SOUL.md ≤ 500 chars, AGENTS.md ≤ 1000 chars, TOOLS.md trim unused entries, MEMORY.md keep durable facts only, daily memory files: archive anything older than 3 days
-- Show full rewritten content for each file in a code block
+- Show rewritten content in a code block; replace any API keys, tokens, or passwords with `<redacted>`
 
 ---
 
 ## Task 3 — Stale session cleanup
 
-Use the skill's `scripts/purge-stale-sessions.sh` or generate a similar script that:
-
-- Deletes session `.jsonl` files older than 24 hours
-- Optionally archives before deleting
-- Is safe to run as a daily cron job
-- Prints count of files deleted
+Use the skill's `scripts/purge-stale-sessions.sh`. It archives (moves) stale files to a timestamped directory by default; run with `--delete` only after verifying archive contents. Safe for cron if run without `--delete`.
 
 ---
 

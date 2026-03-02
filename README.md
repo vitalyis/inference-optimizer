@@ -30,18 +30,19 @@ clawhub install https://github.com/vitalyis/inference-optimizer
 **Manual:**
 ```bash
 git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/public/inference-optimizer
-bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh
+bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply
 ```
 
 ## Setup
 
-After install, run the setup script to wire `/optimize` and purge into your workspace:
+After install, run the setup script. By default it previews changes only; use `--apply` to modify workspace files:
 
 ```bash
-bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh
+bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh        # preview
+bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply  # apply
 ```
 
-This copies instructions into `AGENTS.md` and `TOOLS.md`, ensures scripts are executable, and prints allowlist snippets if needed.
+This makes scripts executable and, with `--apply`, appends command snippets to `AGENTS.md` and `TOOLS.md`.
 
 ## Commands
 
@@ -49,7 +50,7 @@ This copies instructions into `AGENTS.md` and `TOOLS.md`, ensures scripts are ex
 |---------|--------------|
 | `/optimize` | Run token audit (workspace files, sessions, config) and return raw output |
 | `/audit` | Same as `/optimize` |
-| purge sessions | After audit, if user approves, run purge script to remove stale sessions and stub memory |
+| purge sessions | After audit, if user approves, run purge script (archives by default; `--delete` for immediate removal) |
 
 ## Verify
 
@@ -79,7 +80,7 @@ scripts/
 └── verify.sh              ← confirms install
     ↓
 /optimize in chat → exec audit script → return output
-purge approved    → exec purge script → return output
+purge approved    → exec purge script → archives to ~/openclaw-purge-archive/ by default
 ```
 
 ## Paths
@@ -90,10 +91,16 @@ Scripts auto-detect session and workspace paths:
 - **Workspace:** `~/clawd` or `~/.openclaw/workspace-whatsapp`
 - **Memory:** `~/clawd/memory` or `~/.openclaw/workspace-whatsapp/memory`
 
+## Security
+
+- **Audit** outputs only metadata (file sizes, token estimates); it does not echo config or workspace contents. Config and workspace paths may contain secrets; the audit reports character counts only.
+- **Purge** moves files to a timestamped archive by default (`~/openclaw-purge-archive/`). Verify archive contents before removing. Use `--delete` only when you want immediate deletion without archive.
+- **Setup** modifies `AGENTS.md` and `TOOLS.md`. Run without `--apply` first to preview. Revert by removing the appended sections.
+- **Allowlist:** Prefer running purge manually (`bash purge-stale-sessions.sh`) so no exec allowlist changes are needed. If purge must run via agent, add path-specific patterns rather than broad wildcards (`find *`, `rm **`).
+
 ## Limitations
 
 - Run on the same host as OpenClaw (VPS or local)
-- Exec allowlist must include `find`, `find *`, `find **`, `rm`, `rm *`, `rm **`, `bash`, `bash *`, `bash **` for purge
 - Workspace layout must match OpenClaw defaults
 
 ## License

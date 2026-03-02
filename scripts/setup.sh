@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Setup inference-optimizer: copy commands into workspace, make scripts executable.
+# Setup inference-optimizer: make scripts executable; optionally wire commands into workspace.
+# Default: preview only. Use --apply to modify AGENTS.md and TOOLS.md.
 # Run after install. Targets ~/clawd and ~/.openclaw/workspace-whatsapp.
 
 set -euo pipefail
@@ -13,6 +14,9 @@ chmod +x "$SKILL_DIR/scripts/openclaw-audit.sh"
 chmod +x "$SKILL_DIR/scripts/purge-stale-sessions.sh"
 echo "[OK] Scripts executable"
 
+APPLY=false
+[[ "${1:-}" = "--apply" ]] && APPLY=true
+
 AUDIT_PATH="$SKILL_DIR/scripts/openclaw-audit.sh"
 PURGE_PATH="$SKILL_DIR/scripts/purge-stale-sessions.sh"
 
@@ -21,15 +25,30 @@ SNIPPET_AGENTS="
 ## Chat commands (exact match, run immediately)
 
 | Command | Action |
-| \`/optimize\` or \`/audit\` | Exec \`bash $AUDIT_PATH\`, return raw output. Do NOT ask what to optimize. Do NOT list options. |"
+| \`/optimize\` or \`/audit\` | Exec \`bash $AUDIT_PATH\`, return output. |"
 
 SNIPPET_TOOLS="
 
 ## inference-optimizer
 
 | App | Use | Example |
-| \`/optimize\` | Run audit script | exec \`bash $AUDIT_PATH\`, return raw output. Do NOT ask what to optimize. |
-| purge sessions | After /optimize if user approves | exec \`bash $PURGE_PATH\`, return raw output. |"
+| \`/optimize\` | Run audit script | exec \`bash $AUDIT_PATH\`, return output. |
+| purge sessions | After /optimize if user approves | exec \`bash $PURGE_PATH\` (archives by default). |"
+
+if [[ "$APPLY" = false ]]; then
+  echo ""
+  echo "Preview (no changes made). Run with --apply to modify workspace files."
+  echo ""
+  echo "Would add to AGENTS.md:"
+  echo "$SNIPPET_AGENTS"
+  echo ""
+  echo "Would add to TOOLS.md:"
+  echo "$SNIPPET_TOOLS"
+  echo ""
+  echo "Workspaces: $WORKSPACE_MAIN, $WORKSPACE_WHATSAPP"
+  echo "Usage: bash $0 --apply"
+  exit 0
+fi
 
 for ws in "$WORKSPACE_MAIN" "$WORKSPACE_WHATSAPP"; do
   [[ -d "$ws" ]] || continue
@@ -56,5 +75,5 @@ for ws in "$WORKSPACE_MAIN" "$WORKSPACE_WHATSAPP"; do
 done
 
 echo ""
-echo "Done. Purge allowlist: ensure find *, find **, rm *, rm ** in exec-approvals.json."
+echo "Done. Prefer manual purge: bash $PURGE_PATH (archives by default)."
 echo "Verify: bash $SKILL_DIR/scripts/verify.sh"
