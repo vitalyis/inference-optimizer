@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.1] - 2026-03-02
+
+Follow-up security review (see [SECURITY.md](SECURITY.md) addendum):
+
+- Replaced "return raw output" / "return output" with passive phrasing
+- Added guidance disclaimer in SKILL.md (not system overrides; platform precedence)
+- Added Before installing checklist (7 steps) to README
+- Manual install: preview before `--apply`
+- Added Script reference section (line numbers for review)
+
 ## [0.2.0] - 2026-03-02
 
 Security remediation (see [SECURITY.md](SECURITY.md)):

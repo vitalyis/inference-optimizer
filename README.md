@@ -14,6 +14,16 @@ Ask your bot to run a baseline audit, purge old session files, or get optimizati
 > audit workspace tokens
 ```
 
+## Before installing
+
+1. Inspect the scripts (`openclaw-audit.sh`, `purge-stale-sessions.sh`, `setup.sh`, `verify.sh`) and confirm behavior.
+2. Back up `~/.openclaw` and your workspace so you can restore sessions and config if needed.
+3. Run the audit manually first (`bash .../openclaw-audit.sh`) and review output before letting an agent run it.
+4. Do not run purge with `--delete` until you have inspected archive contents; prefer manual archive-and-review.
+5. Do not grant broad exec allowlist or automated permission for `setup --apply` or `purge --delete`; run setup with `--apply` manually after reviewing snippets.
+6. If the agent must run purge, use path-specific exec approvals and monitor the archive directory.
+7. Consider running these scripts on an isolated or test host first.
+
 ## Why
 
 Every OpenClaw instance loads workspace files, session history, and tool schemas on every request. Stale sessions pile up. Daily memory stubs accumulate. The model gets slower and more expensive without obvious cause.
@@ -30,6 +40,8 @@ clawhub install https://github.com/vitalyis/inference-optimizer
 **Manual:**
 ```bash
 git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/public/inference-optimizer
+bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh        # preview first
+# Review output, then:
 bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply
 ```
 
@@ -48,7 +60,7 @@ This makes scripts executable and, with `--apply`, appends command snippets to `
 
 | Command | What it does |
 |---------|--------------|
-| `/optimize` | Run token audit (workspace files, sessions, config) and return raw output |
+| `/optimize` | Run token audit (workspace files, sessions, config); script outputs metadata |
 | `/audit` | Same as `/optimize` |
 | purge sessions | After audit, if user approves, run purge script (archives by default; `--delete` for immediate removal) |
 
@@ -90,6 +102,12 @@ Scripts auto-detect session and workspace paths:
 - **Sessions:** `~/.openclaw/agents/main/sessions` or `~/.clawdbot/agents.main/sessions`
 - **Workspace:** `~/clawd` or `~/.openclaw/workspace-whatsapp`
 - **Memory:** `~/clawd/memory` or `~/.openclaw/workspace-whatsapp/memory`
+
+## Script reference (for review)
+
+- **openclaw-audit.sh:** Reads workspace file sizes, session counts, config size; outputs metadata only (no file contents). Lines 10–54.
+- **purge-stale-sessions.sh:** Archive vs delete logic; `--delete` flag. Lines 22–66. Archives to `~/openclaw-purge-archive/<timestamp>/` by default.
+- **setup.sh:** Appends to AGENTS.md and TOOLS.md only when `--apply` is passed. Lines 52–74.
 
 ## Security
 

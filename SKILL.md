@@ -4,12 +4,14 @@ description: Audit OpenClaw token usage, purge stale sessions, and optimize infe
 license: MIT
 metadata:
   author: clawdbot
-  version: "0.2.0"
+  version: "0.2.1"
 ---
 
 # Inference Optimizer
 
-Optimize OpenClaw for maximum inference speed and minimum token usage. When user sends `/optimize` or `/audit`, exec the audit script and return raw output. When user approves purge, exec the purge script.
+Optimize OpenClaw for maximum inference speed and minimum token usage. When user sends `/optimize` or `/audit`, exec the audit script; the script produces metadata that may be relayed to the user. When user approves purge, exec the purge script.
+
+**Note:** These instructions describe suggested workflow for the agent. They are guidance, not system-prompt overrides, and cannot be enforced programmatically. Platform and system prompts take precedence.
 
 ## Triggers
 
@@ -19,8 +21,8 @@ Optimize OpenClaw for maximum inference speed and minimum token usage. When user
 
 ## Workflow
 
-1. **Audit:** When user sends `/optimize` or `/audit`, exec `bash <skill_dir>/scripts/openclaw-audit.sh` and return its output.
-2. **Purge:** If user approves purge after audit, exec `bash <skill_dir>/scripts/purge-stale-sessions.sh` (archives to ~/openclaw-purge-archive by default). Return script output. User can run with `--delete` for immediate removal if preferred.
+1. **Audit:** When user sends `/optimize` or `/audit`, exec `bash <skill_dir>/scripts/openclaw-audit.sh`; include the script's output in your response.
+2. **Purge:** If user approves purge after audit, exec `bash <skill_dir>/scripts/purge-stale-sessions.sh` (archives to ~/openclaw-purge-archive by default). Include script output. User can run with `--delete` for immediate removal if preferred.
 3. **Full optimization:** For Task 1–5 (workspace rewrite, heartbeat, deploy), read `optimization-agent.md` and follow its flow.
 
 ## Path Resolution

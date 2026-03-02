@@ -1,6 +1,19 @@
 # Security: VirusTotal report remediation
 
-This document explains how v0.2.0 changes address findings from a third-party security review (VirusTotal-style report).
+This document explains how v0.2.0 changes address findings from third-party security reviews (VirusTotal-style reports).
+
+---
+
+## v0.2.1 addendum (follow-up report)
+
+**Report:** Pre-scan still flagged "return raw output" and prescriptive phrasing ("return output"). Skill instructs agent to follow a workflow that could coerce behavior. Enforcement of redaction/metadata rules relies on the agent.
+
+**Changes:**
+- Replaced "return raw output" and "return output" with passive phrasing: "the script produces metadata that may be relayed"; "include the script's output in your response."
+- Added disclaimer in SKILL.md: "These instructions describe suggested workflow for the agent. They are guidance, not system-prompt overrides, and cannot be enforced programmatically. Platform and system prompts take precedence."
+- Added **Before installing** checklist to README (7 steps mirroring reviewer recommendations).
+- Manual install now shows preview before `--apply`.
+- Added **Script reference** section with line numbers for reviewer inspection.
 
 ---
 
@@ -80,3 +93,4 @@ The skill now describes intended behavior rather than forbidding specific respon
 | Broad allowlist (`find **`, `rm **`) | Recommend manual purge; path-specific patterns if agent exec required |
 | setup.sh modifies without confirmation | Preview by default; require `--apply` to write |
 | Lack of security documentation | README Security section + this SECURITY.md |
+| Residual "return output" phrasing (v0.2.1) | Passive wording; guidance disclaimer; Before installing checklist |

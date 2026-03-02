@@ -25,14 +25,14 @@ SNIPPET_AGENTS="
 ## Chat commands (exact match, run immediately)
 
 | Command | Action |
-| \`/optimize\` or \`/audit\` | Exec \`bash $AUDIT_PATH\`, return output. |"
+| \`/optimize\` or \`/audit\` | Exec \`bash $AUDIT_PATH\`; include script output. |"
 
 SNIPPET_TOOLS="
 
 ## inference-optimizer
 
 | App | Use | Example |
-| \`/optimize\` | Run audit script | exec \`bash $AUDIT_PATH\`, return output. |
+| \`/optimize\` | Run audit script | exec \`bash $AUDIT_PATH\`; include output. |
 | purge sessions | After /optimize if user approves | exec \`bash $PURGE_PATH\` (archives by default). |"
 
 if [[ "$APPLY" = false ]]; then
