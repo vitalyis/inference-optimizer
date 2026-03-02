@@ -22,12 +22,12 @@ This skill fixes that. Run `/optimize` to get a token audit. Approve a purge to 
 
 **ClawHub (recommended):**
 ```bash
-clawhub install https://github.com/<owner>/inference-optimizer
+clawhub install https://github.com/vitalyis/inference-optimizer
 ```
 
 **Manual:**
 ```bash
-git clone https://github.com/<owner>/inference-optimizer.git ~/clawd/skills/public/inference-optimizer
+git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/public/inference-optimizer
 bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh
 ```
 
