@@ -4,7 +4,7 @@ description: Audit OpenClaw token usage and run optimization actions with approv
 license: MIT
 metadata:
   author: clawdbot
-  version: "0.2.1"
+  version: "0.2.2"
 ---
 
 # Inference Optimizer
