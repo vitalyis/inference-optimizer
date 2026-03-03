@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.3] - 2026-03-03
+
+- Exec allowlist docs: resolved binary paths (`/usr/bin/bash` on Ubuntu), preflight patterns, and troubleshooting guidance in README and SKILL.
+
 ## [0.2.2] - 2026-03-03
 
 - Added `/preflight` chat flow for backup, audit, and setup preview without shell access.

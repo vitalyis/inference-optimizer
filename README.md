@@ -19,6 +19,8 @@ Ask your bot to run a baseline audit, purge old session files, or get optimizati
 
 Use `/preflight` from chat to run install checks in one step. It creates timestamped backup archives, runs the audit, and runs setup preview.
 
+If `/preflight` triggers approval prompts or "allowlist miss," ensure the exec allowlist includes `/usr/bin/bash` patterns. See the Security section.
+
 If needed after review, run:
 
 ```bash
@@ -113,6 +115,7 @@ Scripts auto-detect session and workspace paths:
 - **Sessions:** `~/.openclaw/agents/main/sessions` or `~/.clawdbot/agents.main/sessions`
 - **Workspace:** `~/clawd` or `~/.openclaw/workspace-whatsapp`
 - **Memory:** `~/clawd/memory` or `~/.openclaw/workspace-whatsapp/memory`
+- On Ubuntu, `bash` resolves to `/usr/bin/bash`; add `/usr/bin/bash`, `/usr/bin/bash *`, and `/usr/bin/bash **` to the exec allowlist so `/preflight` runs without approval.
 
 ## Script reference (for review)
 
@@ -128,6 +131,7 @@ Scripts auto-detect session and workspace paths:
 - **Purge** moves stale session and memory files to a timestamped archive by default (`~/openclaw-purge-archive/<timestamp>/`). Verify archive contents before removing. Use `--delete` only when you want immediate deletion without archive.
 - **Setup** modifies `AGENTS.md` and `TOOLS.md`. Run without `--apply` first to preview. Revert by removing the appended sections.
 - **Allowlist:** Prefer running purge manually (`bash purge-stale-sessions.sh`) so no exec allowlist changes are needed. If purge must run via agent, add path-specific patterns rather than broad wildcards (`find *`, `rm **`).
+- **Exec allowlist (gateway/VPS):** OpenClaw matches resolved binary paths only (basename-only entries are ignored). On Ubuntu, `bash` resolves to `/usr/bin/bash`; patterns with `/bin/bash` alone may miss. Add `/usr/bin/bash`, `/usr/bin/bash *`, `/usr/bin/bash **` to the agent allowlist for `/preflight` to run without approval. If approval cards persist, run `which bash` and `readlink -f /bin/bash` and add patterns matching the resolved path.
 
 ## Limitations
 
