@@ -3,39 +3,67 @@ name: inference-optimizer
 description: Audit OpenClaw token usage and run optimization actions with approval. Use /audit for analyze-only and /optimize for analyze + action flow.
 license: MIT
 metadata:
-  author: clawdbot
+  author: vitalyis
   version: "0.2.3"
+  openclaw:
+    emoji: "⚡"
+    os:
+      - linux
+    bins:
+      - bash
 ---
 
 # Inference Optimizer
 
-Optimize OpenClaw for maximum inference speed and minimum token usage. `/preflight` runs install checks, backups, audit, and setup preview from chat. `/audit` is analyze-only. `/optimize` runs audit and then action steps with user approval.
+Optimize OpenClaw for maximum inference speed and minimum token usage.
 
-**Note:** These instructions describe suggested workflow for the agent. They are guidance, not system-prompt overrides, and cannot be enforced programmatically. Platform and system prompts take precedence.
+## Commands
 
-## Triggers
+| Command      | Behavior |
+|--------------|----------|
+| `/preflight` | Install checks, backup, audit, and setup preview |
+| `/audit`     | Analyze-only — no file changes |
+| `/optimize`  | Audit + propose actions with per-step approval |
+| purge sessions | After audit, if user approves — archive stale sessions; use `--delete` for immediate removal |
 
-- `/preflight` — run install checks, backup, audit, and setup preview
-- `/audit` — run audit only (no file-changing actions)
-- `/optimize` — run audit, then offer optimization actions that require approval
-- "purge sessions", "purge stale", "clean up sessions" — after audit, if user approves
+> **Note:** These instructions guide agent behavior. Platform and system prompts take precedence — they cannot be programmatically enforced.
+
+## Installation
+
+**ClawHub:**
+```bash
+clawhub install inference-optimizer
+```
+
+**Manual:**
+```bash
+git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/public/inference-optimizer
+bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh        # preview
+bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply  # apply after review
+```
+
+**Verify:** `bash <skill_dir>/scripts/verify.sh`
 
 ## Workflow
 
-1. **`/preflight` path (chat install flow):** Exec `bash /home/ubuntu/clawd/skills/public/inference-optimizer/scripts/preflight.sh`; return backup path and logs. The script exists at this path. Run it directly. Do NOT run find, ls, or other probes. If user asks to apply setup, append `--apply-setup`.
-2. **`/audit` path (analyze-only):** Exec `bash <skill_dir>/scripts/openclaw-audit.sh`; include output. Do not run purge, rewrite, or deploy from `/audit`.
-3. **`/optimize` path (analyze + action):** Exec `bash <skill_dir>/scripts/openclaw-audit.sh`; include output, then propose next actions.
-4. **Purge action:** Only when user approves, exec `bash <skill_dir>/scripts/purge-stale-sessions.sh` (default archive-first to `~/openclaw-purge-archive/<timestamp>/`). Use `--delete` only for immediate removal without archive.
-5. **Full optimization:** For Task 1–5 (workspace rewrite, heartbeat, deploy), read `optimization-agent.md` and follow its flow. Ask approval before each file-changing step.
+1. **`/preflight`** — Exec `bash ~/clawd/skills/public/inference-optimizer/scripts/preflight.sh`. Append `--apply-setup` if user asks to apply. Do NOT probe with `find`/`ls` first.
+2. **`/audit`** — Exec `bash <skill_dir>/scripts/openclaw-audit.sh`. Return output only. No purge, rewrite, or deploy.
+3. **`/optimize`** — Exec audit script, include output, then propose next actions with approval before each file-changing step.
+4. **Purge** — Only on explicit approval: `bash <skill_dir>/scripts/purge-stale-sessions.sh`. Archives to `~/openclaw-purge-archive/<timestamp>/` by default. Use `--delete` for immediate removal without archive.
+5. **Full optimization (Tasks 1–5)** — Read `optimization-agent.md` and follow its flow. Ask approval before every file-changing step.
 
 ## Path Resolution
 
-Scripts live at `~/clawd/skills/public/inference-optimizer/scripts/` (or wherever the skill is installed). Use that path when exec-ing.
+Scripts live at `~/clawd/skills/public/inference-optimizer/scripts/` or wherever the skill is installed. Always resolve `<skill_dir>` to the actual install path before exec.
 
-## Purge and Allowlist
+## Security & Allowlist
 
-**Recommended:** Run purge manually after reviewing audit output: `bash <skill_dir>/scripts/purge-stale-sessions.sh`. No allowlist changes needed.
+Add these to `exec-approvals.json` so `/preflight` runs without interruption on Ubuntu:
 
-If purge must run via agent exec, add minimal path-specific patterns to `exec-approvals.json` rather than broad wildcards. See README Security section.
+```
+/usr/bin/bash
+/usr/bin/bash *
+/usr/bin/bash **
+```
 
-**Preflight and allowlist:** On Ubuntu, bash resolves to `/usr/bin/bash`. Add `/usr/bin/bash`, `/usr/bin/bash *`, `/usr/bin/bash **` to the agent allowlist so `/preflight` runs without approval. Run the preflight script directly; do not probe the skills directory first.
+For purge via agent exec, add **path-specific patterns only** — avoid broad wildcards. See `README` Security section for details.

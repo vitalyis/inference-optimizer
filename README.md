@@ -43,7 +43,7 @@ This skill fixes that. Run `/audit` for analyze-only output. Run `/optimize` for
 
 **ClawHub (recommended):**
 ```bash
-clawhub install https://github.com/vitalyis/inference-optimizer
+clawhub install inference-optimizer
 ```
 
 **Manual:**

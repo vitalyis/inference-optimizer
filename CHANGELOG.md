@@ -3,6 +3,7 @@
 ## [0.2.3] - 2026-03-03
 
 - Exec allowlist docs: resolved binary paths (`/usr/bin/bash` on Ubuntu), preflight patterns, and troubleshooting guidance in README and SKILL.
+- SKILL.md: ClawHub frontmatter (emoji, os, bins), commands table, Installation section, Security & Allowlist split; README install command `clawhub install inference-optimizer`.
 
 ## [0.2.2] - 2026-03-03
 
