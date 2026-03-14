@@ -6,6 +6,15 @@ Production-oriented OpenClaw skill for auditing runtime health, cleaning stale s
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
+## Quick links
+
+- [Install](#install)
+- [Usage](#usage)
+- [Update](#update)
+- [Safety](#safety)
+- [Security](SECURITY.md)
+- [Contributing](#contributing)
+
 ## What it does
 
 `inference-optimizer` does not start with token tuning guesses. It checks the runtime first, then recommends cleanup or tuning only after the obvious operational failures are ruled out.
@@ -82,6 +91,10 @@ rm -rf ~/clawd/skills/public/inference-optimizer
 - Do not rely on basename-only allowlist entries like `openclaw`.
 
 Additional background and remediation notes live in [SECURITY.md](SECURITY.md).
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for workflow and release-note expectations.
 
 ## License
 
