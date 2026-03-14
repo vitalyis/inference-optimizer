@@ -64,6 +64,37 @@ print_workspace_file() {
   fi
 }
 
+resolve_openclaw_bin() {
+  local candidate
+
+  candidate="$(command -v openclaw 2>/dev/null || true)"
+  if [[ -n "$candidate" ]]; then
+    echo "$candidate"
+    return
+  fi
+
+  for candidate in \
+    "$HOME/.nvm/current/bin/openclaw" \
+    "$HOME/.local/bin/openclaw" \
+    "/usr/local/bin/openclaw" \
+    "/usr/bin/openclaw"
+  do
+    if [[ -x "$candidate" ]]; then
+      echo "$candidate"
+      return
+    fi
+  done
+
+  for candidate in "$HOME"/.nvm/versions/node/*/bin/openclaw; do
+    if [[ -x "$candidate" ]]; then
+      echo "$candidate"
+      return
+    fi
+  done
+
+  find "$HOME/.nvm/versions/node" -path '*/bin/openclaw' \( -type f -o -type l \) 2>/dev/null | sort | tail -n1
+}
+
 section "Runtime health"
 
 USER_GATEWAY_SHOW="$(systemctl --user show openclaw-gateway.service -p LoadState -p ActiveState -p SubState 2>/dev/null || true)"
@@ -102,14 +133,18 @@ fi
 echo ""
 section "OpenClaw binary and update status"
 
-OPENCLAW_BIN="$(command -v openclaw 2>/dev/null || true)"
+OPENCLAW_BIN="$(resolve_openclaw_bin)"
 if [[ -n "$OPENCLAW_BIN" ]]; then
   OPENCLAW_BIN_REAL="$(readlink -f "$OPENCLAW_BIN" 2>/dev/null || echo "$OPENCLAW_BIN")"
 else
   OPENCLAW_BIN_REAL=""
 fi
 
-UPDATE_STATUS="$(openclaw update status 2>/dev/null || true)"
+if [[ -n "$OPENCLAW_BIN_REAL" ]]; then
+  UPDATE_STATUS="$("$OPENCLAW_BIN_REAL" update status 2>/dev/null || true)"
+else
+  UPDATE_STATUS=""
+fi
 INSTALL_TYPE="$(grep -i '^Install:' <<<"$UPDATE_STATUS" | sed 's/^[^:]*:[[:space:]]*//' || true)"
 CHANNEL="$(grep -i '^Channel:' <<<"$UPDATE_STATUS" | sed 's/^[^:]*:[[:space:]]*//' || true)"
 UPDATE_AVAILABLE="$(grep -i '^Update available:' <<<"$UPDATE_STATUS" | sed 's/^[^:]*:[[:space:]]*//' || true)"
