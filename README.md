@@ -1,19 +1,10 @@
 <img width="1280" height="480" alt="Inference Optimizer" src="./social-preview.png" />
 
-# inference-optimizer
+# /inference-optimizer
 
 Production-oriented OpenClaw skill for auditing runtime health, cleaning stale session state, and applying safer inference tuning with approval.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-
-## Quick links
-
-- [Install](#install)
-- [Usage](#usage)
-- [Update](#update)
-- [Safety](#safety)
-- [Security](SECURITY.md)
-- [Contributing](#contributing)
 
 ## What it does
 
