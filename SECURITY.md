@@ -13,15 +13,23 @@ This release keeps the command surface unchanged, but tightens how the skill sho
   1. gateway ownership and duplicate supervisors
   2. restart loops and failed services
   3. resolved `openclaw` binary path and install type
-  4. updater status and allowlist coverage for the resolved path
-  5. plugin provenance and unused local extensions
-  6. only then context pressure, stale sessions, cache-trace, pruning, and concurrency
+  4. workspace command wiring for the installed skill path
+  5. updater status and allowlist coverage for the resolved path
+  6. plugin provenance and unused local extensions
+  7. only then context pressure, stale sessions, cache-trace, pruning, and concurrency
 - Updater/process diagnosis now has stricter rules:
   - warnings are not root cause by themselves
   - partial or truncated output is inconclusive
   - installed version, service state, and logs must be checked before naming a cause
 - Allowlist guidance now explicitly prefers resolved executable paths and bounded NVM wildcards over basename-only rules.
 - `README.md` was simplified, with more operational detail kept here instead of the landing page.
+- `openclaw-audit.sh` now checks runtime health, workspace command wiring, allowlist coverage, plugin provenance signals, and then token/session overhead.
+- `openclaw-audit.sh` now emits a `Recommended next steps` section so the audit produces actionable follow-up instead of raw metrics only.
+- `setup.sh` now updates a managed workspace block idempotently and removes legacy references such as:
+  - `~/clawdbot/code/scripts/openclaw-audit.sh`
+  - `~/clawdbot/code/scripts/purge-stale-sessions.sh`
+  - `/clawd/skills/public/inference-optimizer/...`
+- `verify.sh` now fails when stale install paths or legacy workspace wiring are still present.
 
 ### Why this matters
 
@@ -30,8 +38,9 @@ The March 14, 2026 VPS remediation exposed failure modes that pure token optimiz
 - duplicate gateway supervisors caused the largest live instability
 - updater commands failed from chat because the allowlist covered the wrong path
 - warning text from an untracked plugin was incorrectly treated as the updater failure cause
+- the docs promised runtime-first checks before the shipped scripts actually performed them
 
-This release updates the skill so those conditions are checked before tuning recommendations are made.
+This release updates the skill so those conditions are checked before tuning recommendations are made, and it adds install-time verification so dead VPS paths are caught immediately.
 
 ## Operational safety rules
 

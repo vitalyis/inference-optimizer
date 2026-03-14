@@ -39,9 +39,9 @@ clawhub install inference-optimizer
 
 **Manual:**
 ```bash
-git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/public/inference-optimizer
-bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh        # preview
-bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply  # apply after review
+git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/inference-optimizer
+bash ~/clawd/skills/inference-optimizer/scripts/setup.sh        # preview
+bash ~/clawd/skills/inference-optimizer/scripts/setup.sh --apply  # apply after review
 ```
 
 **Verify:** `bash <skill_dir>/scripts/verify.sh`
@@ -50,11 +50,12 @@ bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply  # apply
 
 ### Audit and remediation branch
 
-1. **`/preflight`**: Exec `bash ~/clawd/skills/public/inference-optimizer/scripts/preflight.sh`. Append `--apply-setup` only if the user asks to apply setup.
+1. **`/preflight`**: Exec `bash <skill_dir>/scripts/preflight.sh`. Append `--apply-setup` only if the user asks to apply setup.
 2. **`/audit`**: Exec `bash <skill_dir>/scripts/openclaw-audit.sh`. Use the script output plus direct environment checks to inspect this order:
    - gateway ownership and duplicate supervisors
    - restart loops or failed services
    - resolved `openclaw` binary path and install type
+   - workspace command wiring for the installed skill path
    - updater status and allowlist coverage for the resolved path
    - plugin provenance and unused local extensions
    - only then context pressure, stale sessions, cache-trace, pruning, and concurrency
@@ -68,7 +69,7 @@ bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply  # apply
 
 ## Path Resolution
 
-Scripts live at `~/clawd/skills/public/inference-optimizer/scripts/` or wherever the skill is installed. Always resolve `<skill_dir>` to the actual install path before exec.
+Scripts live at `~/clawd/skills/inference-optimizer/scripts/` or wherever the skill is installed. Always resolve `<skill_dir>` to the actual install path before exec.
 
 ## Security and Allowlist
 

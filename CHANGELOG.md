@@ -6,6 +6,7 @@
 
 - Release notes for v0.3.0 under `docs/release-notes/0.3.0.md`.
 - Social preview image usage in `SKILL.md` for consistent package presentation.
+- `verify.sh` now checks for legacy `skills/public` and repo-local workspace wiring.
 
 ### Changed
 
@@ -13,11 +14,16 @@
 - Updated `SKILL.md` to check gateway ownership, service health, executable resolution, updater status, allowlist coverage, and plugin provenance before suggesting inference tuning.
 - Simplified `README.md` to a leaner landing-page structure modeled on `bug-hunt`, with install, usage, update, uninstall, and safety sections.
 - Clarified allowlist guidance around resolved executable paths and bounded NVM wildcards.
+- `openclaw-audit.sh` now performs runtime-first checks before token tuning, including workspace command wiring for the installed skill path.
+- `setup.sh` now updates a managed workspace block idempotently instead of append-only wiring.
+- `optimization-agent.md` now matches the runtime-first audit flow and installed `~/clawd/skills/inference-optimizer` path.
 
 ### Fixed
 
 - Added explicit diagnosis rules so warnings alone are not treated as root cause.
 - Documented that partial or truncated updater output is inconclusive until version, service state, and logs are checked.
+- `/audit` now emits recommended next steps instead of raw token numbers only.
+- Installing or reapplying the skill now repairs stale `/preflight`, `/audit`, `/optimize`, and `purge sessions` command wiring on VPS workspaces.
 
 ## [0.2.3] - 2026-03-03
 

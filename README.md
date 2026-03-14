@@ -37,9 +37,9 @@ clawhub install inference-optimizer
 Manual install:
 
 ```bash
-git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/public/inference-optimizer
-bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh
-bash ~/clawd/skills/public/inference-optimizer/scripts/setup.sh --apply
+git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/inference-optimizer
+bash ~/clawd/skills/inference-optimizer/scripts/setup.sh
+bash ~/clawd/skills/inference-optimizer/scripts/setup.sh --apply
 ```
 
 ## Usage
@@ -56,13 +56,14 @@ Operational checks:
 - Treat warnings as signals, not proof.
 - If updater output is partial or truncated, verify installed version, service status, and logs before claiming root cause.
 - Resolve the real executable path before changing the allowlist.
+- Use `bash scripts/verify.sh` after install; it now fails on legacy `skills/public` and repo-local workspace wiring.
 
 For script details and safety constraints, see [SECURITY.md](SECURITY.md).
 
 ## Update
 
 ```bash
-cd ~/clawd/skills/public/inference-optimizer && git pull
+cd ~/clawd/skills/inference-optimizer && git pull
 ```
 
 If installed elsewhere, pull from that skill directory instead.
@@ -70,7 +71,7 @@ If installed elsewhere, pull from that skill directory instead.
 ## Uninstall
 
 ```bash
-rm -rf ~/clawd/skills/public/inference-optimizer
+rm -rf ~/clawd/skills/inference-optimizer
 ```
 
 ## Safety
