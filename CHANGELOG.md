@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.2] - 2026-03-24
+
+### Changed
+
+- `metadata.version` set to `0.3.2` so ClawHub accepts a new publish (`0.3.1` is already registered on the registry). No script changes relative to the prior git tree.
+
+### Added
+
+- Release notes under `docs/release-notes/0.3.2.md`.
+
 ## [0.3.1] - 2026-03-21
 
 ### Added
