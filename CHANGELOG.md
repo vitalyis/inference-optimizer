@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.2] - 2026-03-23
+
+### Added
+
+- `docs/release-notes/0.3.2.md`.
+
+### Changed
+
+- `social-preview.png`: linear dimensions reduced by one-third (1024×571 → 683×381) for lighter ClawHub listing preview.
+
 ## [0.3.1] - 2026-03-21
 
 ### Added
