@@ -29,7 +29,7 @@ metadata:
       homepage: https://github.com/vitalyis/inference-optimizer
 ---
 
-![Inference Optimizer](social-preview.png)
+![Inference Optimizer](https://raw.githubusercontent.com/vitalyis/inference-optimizer/main/social-preview.png)
 
 # Inference Optimizer
 
