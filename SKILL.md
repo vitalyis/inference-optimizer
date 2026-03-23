@@ -3,14 +3,30 @@ name: inference-optimizer
 description: Audit OpenClaw runtime health first, then optimize inference speed and token usage with approval. Use /audit for analyze-only and /optimize for analyze + action flow.
 license: MIT
 metadata:
-  author: vitalyis
-  version: "0.3.0"
+  version: "0.3.1"
   openclaw:
+    author: vitalyis
     emoji: "⚡"
     os:
       - linux
-    bins:
-      - bash
+    requires:
+      bins:
+        - bash
+    cliHelp: |
+      Install (ClawHub): clawhub install inference-optimizer
+      Manual: git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/inference-optimizer
+      Preview: bash ~/clawd/skills/inference-optimizer/scripts/setup.sh
+      Apply: bash ~/clawd/skills/inference-optimizer/scripts/setup.sh --apply
+      Verify: bash ~/clawd/skills/inference-optimizer/scripts/verify.sh
+    config:
+      stateDirs:
+        - ~/.openclaw
+        - ~/clawd/skills/inference-optimizer
+        - ~/openclaw-purge-archive
+      example: "Required skill-specific env vars: none (no API keys). Reads local OpenClaw state under ~/.openclaw; skill files live under ~/clawd/skills/inference-optimizer when installed as documented. Preflight may archive ~/.openclaw and workspace trees—treat backups as potentially sensitive."
+    links:
+      repository: https://github.com/vitalyis/inference-optimizer
+      homepage: https://github.com/vitalyis/inference-optimizer
 ---
 
 ![Inference Optimizer](social-preview.png)

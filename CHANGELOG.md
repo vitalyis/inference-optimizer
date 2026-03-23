@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.1] - 2026-03-21
+
+### Added
+
+- Release notes under `docs/release-notes/0.3.1.md`.
+
+### Changed
+
+- `SKILL.md` frontmatter: declare install commands (`cliHelp`), credential/state paths (`config.stateDirs` + `config.example`), `links`, and `requires.bins` under `metadata.openclaw` per ClawHub registry schema (per maintainer feedback on OpenClaw scanner metadata).
+
 ## [0.3.0] - 2026-03-14
 
 ### Added
