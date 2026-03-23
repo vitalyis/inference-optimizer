@@ -17,13 +17,14 @@ Use [GitHub Security Advisories](https://github.com/vitalyis/inference-optimizer
 - **Runtime before tuning:** Audit gateway ownership, services, resolved `openclaw` path, workspace wiring for this skill, updater/allowlist coverage, plugin signals, then session/context behavior—before inference or token tuning.
 - **Audit is read-only:** `/audit` inspects and reports; it does not purge, rewrite workspace files, deploy, or restart services.
 - **Diagnosis:** Warnings are not root cause by themselves; partial or truncated output is inconclusive until version, service state, and logs are verified.
-- **Allowlists:** Match resolved paths (`which`, `command -v`, `readlink -f`). Prefer bounded NVM patterns over basename-only `openclaw` entries.
+- **Allowlists:** Match resolved paths (`which`, `command -v`, `readlink -f`). Prefer bounded NVM patterns over basename-only `openclaw` entries. For this skill’s scripts, prefer `/usr/bin/bash` plus **one approval line per script path** under `<skill_dir>/scripts/` (see `SKILL.md`). Avoid `/usr/bin/bash *` and `/usr/bin/bash **` in allowlists—they are broader than required and are not recommended here.
 
 ```text
 /home/ubuntu/.nvm/versions/node/*/bin/openclaw
 /home/ubuntu/.nvm/versions/node/*/bin/openclaw *
-/home/ubuntu/.nvm/versions/node/*/bin/openclaw **
 ```
+
+Use a second line only when your gateway requires separate entries for subcommands; keep wildcards as narrow as possible.
 
 - **Purge:** `purge-stale-sessions.sh` archives by default to `~/openclaw-purge-archive/<timestamp>/`; use `--delete` only for intentional immediate removal.
 - **Setup:** `setup.sh` is preview-first; `--apply` changes workspace instruction files and agent-facing behavior.

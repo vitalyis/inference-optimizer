@@ -11,6 +11,7 @@
 - `SKILL.md` frontmatter: declare install commands (`cliHelp`), credential/state paths (`config.stateDirs` + `config.example`), `links`, and `requires.bins` under `metadata.openclaw` per ClawHub registry schema (per maintainer feedback on OpenClaw scanner metadata).
 - `SKILL.md`: social preview image uses absolute `raw.githubusercontent.com` URL (ClawHub / clients that render without a local asset path).
 - `social-preview.png`: linear dimensions reduced by one-third (1024×571 → 683×381) for lighter ClawHub listing preview.
+- `SKILL.md` + `SECURITY.md`: exec allowlist guidance uses path-specific `/usr/bin/bash …/scripts/<name>.sh` lines only; removed broad `/usr/bin/bash *` / `**` examples and the extra `openclaw **` NVM line; note `python3` for `setup.sh` and add `python3` to `requires.bins`.
 
 ## [0.3.0] - 2026-03-14
 

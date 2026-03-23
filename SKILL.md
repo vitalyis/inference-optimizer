@@ -12,6 +12,7 @@ metadata:
     requires:
       bins:
         - bash
+        - python3
     cliHelp: |
       Install (ClawHub): clawhub install inference-optimizer
       Manual: git clone https://github.com/vitalyis/inference-optimizer.git ~/clawd/skills/inference-optimizer
@@ -89,18 +90,24 @@ Scripts live at `~/clawd/skills/inference-optimizer/scripts/` or wherever the sk
 
 ## Security and Allowlist
 
-Add these to `exec-approvals.json` so `/preflight` runs without interruption on Ubuntu:
+Prefer **path-specific** `exec-approvals.json` entries: one line per script under your real `<skill_dir>` (resolve with `readlink -f` if the path is a symlink). Example shape after substituting the install path:
 
 ```text
 /usr/bin/bash
-/usr/bin/bash *
-/usr/bin/bash **
+/usr/bin/bash /home/ubuntu/clawd/skills/inference-optimizer/scripts/preflight.sh
+/usr/bin/bash /home/ubuntu/clawd/skills/inference-optimizer/scripts/openclaw-audit.sh
+/usr/bin/bash /home/ubuntu/clawd/skills/inference-optimizer/scripts/setup.sh
+/usr/bin/bash /home/ubuntu/clawd/skills/inference-optimizer/scripts/purge-stale-sessions.sh
+/usr/bin/bash /home/ubuntu/clawd/skills/inference-optimizer/scripts/verify.sh
 ```
+
+`setup.sh` invokes `python3` for idempotent workspace block edits; allow that binary only if your platform uses it (e.g. `/usr/bin/python3` with the same path-bound style if your runner requires it).
 
 Before editing any allowlist:
 
 - Resolve the real executable path with `which`, `command -v`, or `readlink -f`.
 - Prefer exact paths or bounded wildcards for versioned NVM installs, for example `/home/ubuntu/.nvm/versions/node/*/bin/openclaw *`.
 - Do not assume basename-only rules such as `openclaw` are sufficient.
+- Do not add `/usr/bin/bash *` or `/usr/bin/bash **`; they grant far more shell than this skill needs.
 
-For purge via agent exec, add path-specific patterns only. Avoid broad wildcards. See `README.md` and `SECURITY.md` for operational detail.
+For purge via agent exec, add path-specific patterns only. Optional wider patterns and trade-offs are discussed in `SECURITY.md`. See also `README.md` and `SECURITY.md` for operational detail.
