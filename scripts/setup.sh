@@ -29,9 +29,9 @@ $BEGIN_MARKER
 ## inference-optimizer commands (managed)
 
 | Command | Action |
-| \`/audit\` | Exec \`bash $AUDIT_PATH\`; include runtime findings and recommended next steps only. Do not run file-changing actions. |
-| \`/optimize\` | Exec \`bash $AUDIT_PATH\`; include output, then propose remediation or optimization actions. Require explicit approval before any file-changing action. |
-| \`/preflight\` | Exec \`bash $PREFLIGHT_PATH\`; create backups, run audit, run setup preview, and return next steps. |
+| \`/audit\` | Exec \`$AUDIT_PATH\`; include runtime findings and recommended next steps only. Do not run file-changing actions. |
+| \`/optimize\` | Exec \`$AUDIT_PATH\`; include output, then propose remediation or optimization actions. Require explicit approval before any file-changing action. |
+| \`/preflight\` | Exec \`$PREFLIGHT_PATH\`; create backups, run audit, run setup preview, and return next steps. |
 $END_MARKER
 EOF
 )
@@ -41,10 +41,10 @@ $BEGIN_MARKER
 ## inference-optimizer (managed)
 
 | App | Use | Example |
-| \`/audit\` | Analyze only | exec \`bash $AUDIT_PATH\`; include runtime findings and recommended next steps only. |
-| \`/optimize\` | Analyze + action flow | exec \`bash $AUDIT_PATH\`; then propose actions; run actions only after approval. |
-| \`/preflight\` | Backup and install checks | exec \`bash $PREFLIGHT_PATH\`; optional apply: \`bash $PREFLIGHT_PATH --apply-setup\` after approval. |
-| purge sessions | Approved action after audit/optimize | exec \`bash $PURGE_PATH\` (archives by default). |
+| \`/audit\` | Analyze only | exec \`$AUDIT_PATH\`; include runtime findings and recommended next steps only. |
+| \`/optimize\` | Analyze + action flow | exec \`$AUDIT_PATH\`; then propose actions; run actions only after approval. |
+| \`/preflight\` | Backup and install checks | exec \`$PREFLIGHT_PATH\`; optional apply: \`$PREFLIGHT_PATH --apply-setup\` after approval. |
+| purge sessions | Approved action after audit/optimize | exec \`$PURGE_PATH\` (archives by default). |
 $END_MARKER
 EOF
 )
@@ -124,5 +124,5 @@ for ws in "$WORKSPACE_MAIN" "$WORKSPACE_WHATSAPP"; do
 done
 
 echo ""
-echo "Done. Prefer manual purge: bash $PURGE_PATH (archives by default)."
-echo "Verify: bash $SKILL_DIR/scripts/verify.sh"
+echo "Done. Prefer manual purge: $PURGE_PATH (archives by default)."
+echo "Verify: $SKILL_DIR/scripts/verify.sh"

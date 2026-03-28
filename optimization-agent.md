@@ -105,6 +105,10 @@ Generate a deploy script that:
 
 - Run Task 1 first; use its output to drive Task 2.
 - Do not infer root cause from warning lines alone. If updater output is partial or truncated, verify installed version, service state, and logs before naming the cause.
+- For `/optimize`, the audit script must be the first shell exec. Do not preflight with `ls`, `rg`, `find`, `openclaw status`, or similar shell helpers before running `scripts/openclaw-audit.sh`.
+- If you need context before the audit, use `read` on `MEMORY.md` or `memory_search`, not shell.
+- If a tool returns `exec denied: allowlist miss`, treat it as a hard deny. Do not invent approval instructions. Only present `/approve <id> ...` when the tool result includes a real approval request ID.
+- On this VPS, `openclaw-gateway.service` is the authoritative gateway owner. Keep `clawdbot.service` disabled, and preserve `pass-cli` secret injection inside the user unit.
 - Task 3–5 produce artifacts; verify generated scripts before execution.
 - Session path may be `~/.openclaw/agents/main/sessions/` or `~/.clawdbot/agents.main/sessions/` depending on install; check at runtime.
 - Heartbeat config keys must match the OpenClaw version's schema; validate before deploy.

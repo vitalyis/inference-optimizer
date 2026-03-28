@@ -74,7 +74,7 @@ else
   ((FAIL++)) || true
 fi
 
-AUDIT_OUTPUT="$(bash "$SKILL_DIR/scripts/openclaw-audit.sh" 2>/dev/null || true)"
+AUDIT_OUTPUT="$("$SKILL_DIR/scripts/openclaw-audit.sh" 2>/dev/null || true)"
 if grep -Fq "=== Runtime health ===" <<<"$AUDIT_OUTPUT"; then
   echo "[OK] audit reports runtime health"
   ((PASS++)) || true

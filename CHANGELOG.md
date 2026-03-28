@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.3] - 2026-03-28
+
+### Changed
+
+- Reworked execution guidance to prefer direct script paths instead of `bash <skill_dir>/...`, reducing allowlist fragility on locked-down OpenClaw installs.
+- Added explicit `/audit` and `/optimize` rules preventing helper-shell preludes before the main audit script.
+- Clarified approval semantics so `allowlist miss` / `exec denied` is treated as a hard deny unless a real approval ID is returned.
+- Tightened allowlist documentation around exact script paths, bounded NVM wildcards, and narrow optional read-only helper commands.
+- `openclaw-audit.sh` now evaluates allowlist coverage against the actual OpenClaw executable path used for approvals and reports that target explicitly.
+- Updated VPS ownership guidance for this deployment: keep `openclaw-gateway.service` active, keep `clawdbot.service` disabled, and preserve `pass-cli` secret injection inside the user service.
+
+### Added
+
+- Release notes under `docs/release-notes/0.3.3.md`.
+
 ## [0.3.2] - 2026-03-24
 
 ### Changed

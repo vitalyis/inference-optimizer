@@ -45,7 +45,7 @@ backup_dir "$WORKSPACE_WHATSAPP" "workspace-whatsapp"
 echo ""
 echo "=== Audit ==="
 AUDIT_LOG="$RUN_DIR/audit.txt"
-bash "$SKILL_DIR/scripts/openclaw-audit.sh" | tee "$AUDIT_LOG"
+"$SKILL_DIR/scripts/openclaw-audit.sh" | tee "$AUDIT_LOG"
 echo "[OK] Audit log: $AUDIT_LOG"
 
 echo ""

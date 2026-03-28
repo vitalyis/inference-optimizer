@@ -139,6 +139,7 @@ if [[ -n "$OPENCLAW_BIN" ]]; then
 else
   OPENCLAW_BIN_REAL=""
 fi
+OPENCLAW_APPROVAL_TARGET="${OPENCLAW_BIN:-}"
 
 if [[ -n "$OPENCLAW_BIN_REAL" ]]; then
   UPDATE_STATUS="$("$OPENCLAW_BIN_REAL" update status 2>/dev/null || true)"
@@ -200,17 +201,18 @@ check_workspace_file "$WORKSPACE_WHATSAPP/TOOLS.md"
 echo ""
 section "Allowlist coverage"
 
-if [[ -f "$APPROVALS" && -n "$OPENCLAW_BIN_REAL" ]]; then
-  NVM_WILDCARD_PATH="$(sed -E 's#/versions/node/[^/]+/#/versions/node/*/#' <<<"$OPENCLAW_BIN_REAL")"
+if [[ -f "$APPROVALS" && -n "$OPENCLAW_APPROVAL_TARGET" ]]; then
+  NVM_WILDCARD_PATH="$(sed -E 's#/versions/node/[^/]+/#/versions/node/*/#' <<<"$OPENCLAW_APPROVAL_TARGET")"
   EXACT_ALLOWLIST=0
   WILDCARD_ALLOWLIST=0
   BASENAME_ONLY=0
 
-  grep -Fq "$OPENCLAW_BIN_REAL" "$APPROVALS" && EXACT_ALLOWLIST=1
+  grep -Fq "$OPENCLAW_APPROVAL_TARGET" "$APPROVALS" && EXACT_ALLOWLIST=1
   grep -Fq "$NVM_WILDCARD_PATH" "$APPROVALS" && WILDCARD_ALLOWLIST=1
   grep -Fq '"openclaw"' "$APPROVALS" && BASENAME_ONLY=1
 
   echo "  approvals file: $APPROVALS"
+  echo "  approval target path: $OPENCLAW_APPROVAL_TARGET"
   echo "  exact path covered: $([[ $EXACT_ALLOWLIST -eq 1 ]] && echo yes || echo no)"
   echo "  bounded NVM wildcard covered: $([[ $WILDCARD_ALLOWLIST -eq 1 ]] && echo yes || echo no)"
   echo "  basename-only entry present: $([[ $BASENAME_ONLY -eq 1 ]] && echo yes || echo no)"
@@ -222,7 +224,7 @@ if [[ -f "$APPROVALS" && -n "$OPENCLAW_BIN_REAL" ]]; then
     echo "  allowlist coverage for resolved binary: OK"
   fi
 else
-  echo "  approvals file or resolved openclaw path not available"
+  echo "  approvals file or openclaw executable path not available"
 fi
 
 echo ""
@@ -299,7 +301,7 @@ echo ""
 section "Recommended next steps"
 
 if [[ $DUPLICATE_GATEWAY -eq 1 ]]; then
-  add_step "Keep a single gateway supervisor. If openclaw-gateway.service is active, stop and disable any duplicate system wrapper such as clawdbot.service."
+  add_step "Keep a single gateway supervisor. On this VPS, keep openclaw-gateway.service active, keep clawdbot.service disabled, and preserve secret injection in the user service."
 fi
 
 if [[ $RESTART_RISK -eq 1 ]]; then
